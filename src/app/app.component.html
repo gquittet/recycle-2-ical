@@ -1,0 +1,66 @@
+<tui-root>
+  <div class="flex flex-col items-center justify-center gap-y-8">
+    <h1 class="mt-10 flex gap-4 text-4xl text-blue-400">
+      Recycle!
+      <fa-icon [icon]="arrowRightIcon"></fa-icon>
+      <fa-icon [icon]="calendarDaysIcon"></fa-icon>
+    </h1>
+
+    <form class="flex w-[30rem] flex-col items-center gap-y-3 rounded px-8 pb-8 pt-6 shadow-md">
+      <input-field>
+        <tui-input
+          [formControl]="form.controls.postalCode"
+          [maskito]="postalCodeMask"
+          [tuiValidator]="postalCodeValidators"
+        >
+          Code postal
+          <input pattern="[1-9]{1}[0-9]{0,3}" placeholder="0000" tuiTextfield />
+        </tui-input>
+        <error *ngIf="form.controls.postalCode.hasError('required')">
+          Vous devez rentrer votre code postal
+        </error>
+        <error *ngIf="form.controls.postalCode.hasError('min')">Le code postal est incorrect</error>
+        <error *ngIf="form.controls.postalCode.hasError('max')">Le code postal est incorrect</error>
+      </input-field>
+
+      <input-field>
+        <tui-input
+          [formControl]="form.controls.street"
+          [disabledControl]="form.controls.postalCode.invalid"
+        >
+          Rue
+          <input tuiTextfield />
+        </tui-input>
+        <error *ngIf="form.controls.street.hasError('required')">
+          Vous devez rentrer votre rue
+        </error>
+      </input-field>
+
+      <input-field>
+        <tui-input
+          [formControl]="form.controls.house"
+          [maskito]="houseMask"
+          [tuiValidator]="houseValidators"
+          [disabledControl]="form.controls.postalCode.invalid || form.controls.street.invalid"
+        >
+          Numéro
+          <input pattern="[1-9]{1}[0-9]{0,3}" placeholder="0" tuiTextfield />
+        </tui-input>
+        <error *ngIf="form.controls.house.hasError('required')">
+          Vous devez rentrer le numéro de votre maison
+        </error>
+        <error *ngIf="form.controls.house.hasError('min')">
+          Le numéro de votre maison est incorrect
+        </error>
+        <error *ngIf="form.controls.house.hasError('max')">
+          Le numéro de votre maison est incorrect
+        </error>
+      </input-field>
+
+      <button tuiButton type="submit" button-primary [disabled]="form.invalid" class="mt-4">
+        <fa-icon [icon]="gearIcon" class="mr-1"></fa-icon>
+        <span>Générer</span>
+      </button>
+    </form>
+  </div>
+</tui-root>
